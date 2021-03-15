@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+    <!------------------------------------------------------------------------------------------>
+    <!--------------------------------------- Head --------------------------------------------->
+    <!------------------------------------------------------------------------------------------>
+    <head>
+        <meta charset="utf-8" />
+        
+        <title>
+            dviz-cw1-19161032
+        </title>
+        
+        <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+        
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.js"></script>
+        
+        <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.1/mapbox-gl.css" rel="stylesheet" />
+        
+        <style>
+            body { margin: 0; padding: 0; }
+            #map { position: absolute; top: 0; bottom: 0; width: 100%; }; 
+        </style>
+
+    </head>
+
+    <!------------------------------------------------------------------------------------------->
+    <!--------------------------------------- Body ---------------------------------------------->
+    <!------------------------------------------------------------------------------------------->
+
+    <!--------------------------------------- Style1 -------------------------------------------->
+    <!--------------------------------------- 1)button ------------------------------------------>
+    <body> 
+
+        <nav id="menu"></nav>
+        <div id="map"></div>
+
+        <style>
+            #menu {
+                background: #f8f8f8;
+                position: absolute;
+                z-index: 1;
+                top: 10px;
+                right: 10px;
+                border-radius: 3px;
+                width: 120px;
+                border: 1px solid rgba(0, 0, 0, 0.4);
+                font-family: 'Open Sans', sans-serif;
+            }
+
+            #menu a {
+                font-size: 10px;
+                color: #ffd0a3;
+                display: block;
+                margin: 0;
+                padding: 0;
+                padding: 10px;
+                text-decoration: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+                text-align: center;
+            }
+             
+            #menu a:last-child {
+                border: none;
+            }
+             
+            #menu a:hover {
+                background-color: #3074a4;
+                color: #ffd0a3;
+            }
+             
+            #menu a.active {
+                background-color: #333533;
+                color: #ffd0a3;
+            }
+             
+            #menu a.active:hover {
+                background: #3074a4;
+            }
+        </style>
+             
+
+        <!--------------------------------------- Style2 -------------------------------------------->
+        <!--------------------------------------- 2)Title  ------------------------------------------>
+
+        <style>
+            .map-overlay {
+                font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+                position: absolute;
+                width: 25%;
+                top: 0;
+                left: 0;
+                padding: 10px;
+            }
+            
+            .map-overlay .map-overlay-inner {
+                background-color: #333533;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+                border-radius: 3px;
+                padding: 10px;
+                margin-bottom: 10px;
+                color:#ffd0a3;
+            }
+            
+            .map-overlay h2 {
+                line-height: 24px;
+                display: block;
+                margin: 0 0 10px;
+            }
+        </style>
+
+        <div class="map-overlay top">
+            <div class="map-overlay-inner">
+            <h2>Mean value of gender pay gap for Full-time work colored by local districts in 2020</h2>
+            <h3>dviz-cw1</h3>
+            <h4>19161032</h4>
+            </div>
+        </div>
+
+
+        <!--------------------------------------- Script -------------------------------------------->
+        <!--------------------------------------- 3)map    ------------------------------------------>
+        <!--------------------------------------- 1)button ------------------------------------------>
+
+        <script>
+
+            //Put mapbox access token here
+            mapboxgl.accessToken = 
+            'pk.eyJ1IjoiYW1iZXJ5bGkiLCJhIjoiY2tqdmg3bDdlMDJheTJxcXEzZjVuZ2VteCJ9.yZLoeRwx_OIf0wyyXsx2LA'; 
+                // Load a new map in the 'map' HTML div 
+                var map = new mapboxgl.Map({
+                    container: 'map', // container id
+                    style: 'mapbox://styles/amberyli/ckm9jo84ri0ll17l9wsy86bs4', // mapbox style ID here
+                });
+            
+            //////////////////////////////////////////////////////////////////////////////////////////
+                    
+            // enumerate ids of the layers
+            var toggleableLayerIds = ['Mean values', 'Districts names'];
+
+            // set up the corresponding toggle button for each layer
+            for (var i = 0; i < toggleableLayerIds.length; i++) {
+                var id = toggleableLayerIds[i];
+                
+                var link = document.createElement('a');
+                link.href = '#';
+                link.className = 'active';
+                link.textContent = id;
+                
+                link.onclick = function (e) {
+                    var clickedLayer = this.textContent;
+                    e.preventDefault();
+                    e.stopPropagation();
+                
+                    var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+                
+                    // toggle layer visibility by changing the layout object's visibility property
+                    if (visibility === 'visible') {
+                        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                        this.className = '';
+                    } 
+                    else {
+                        this.className = 'active';
+                        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+                    }
+                };
+                
+                var layers = document.getElementById('menu');
+                layers.appendChild(link);
+            }
+
+       </script>
+
+    </body> 
+
+</html>
