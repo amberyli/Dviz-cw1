@@ -1,0 +1,55 @@
+---
+title: "6-Dviz-Preparation"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Import data
+
+The **basemap** is downloaded from:  [ONS](https://geoportal.statistics.gov.uk/datasets/ae90afc385c04d869bc8cf8890bd1bcd_1), which stores the name of local authority districts with their corresponding longtitudes and latitudes.
+
+The **gpaygap** is collected from: [ONS](https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/annualsurveyofhoursandearningsashegenderpaygaptables). And it is .xls file. So, copy and paste the **mean** of gender pay gap of full-time work from it and store as **'EditedTable.csv'**.
+
+```{r}
+#Set work directory
+setwd("~/Documents/CASA/CASA0003-DV/-cw1-")
+
+#Import
+basemap <- read.csv('Local_Authority_Districts_(December_2017)_Boundaries_in_Great_Britain.csv')
+gpaygap <- read.csv('EditedTable.csv')
+```
+
+Note there are 380 local authorities districts from **basemap**. As discricts are mixed with bigger places in **gpaygap**, it is not sure about whether there are missing value or not. So move data cleaning step after aggregation.
+
+# Rename column
+
+Notice the Government Statistical Service (GSS) codes are named differently. Need to adjust beforehand.
+
+```{r}
+colnames(gpaygap)[which(colnames(gpaygap) == 'Code')] <- 'lad17cd'
+```
+
+# Merge by GSS code
+
+```{r}
+data1 <- merge(gpaygap, basemap, by = 'lad17cd')
+```
+
+# Check before export
+
+Note there are 380 local authorities districts, but only 360 of them have corresponding data of gender pay gap. So, there are 20 places with missing data. (They would be marked as black circles in final map)
+
+```{r}
+summary(data1)
+```
+
+# Export
+
+Check the folder, it should be marked as the 7th file.
+```{r}
+write.csv(data1, '7-EditedEdtiedTable.csv')
+```
+
